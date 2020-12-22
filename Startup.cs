@@ -34,7 +34,8 @@ namespace HelloDotnet5
             });
 
             services.AddHttpClient<WeatherClient>()
-            .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(10, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))));
+                .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(10, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))))
+                .AddTransientHttpErrorPolicy(builder => builder.CircuitBreakerAsync(3, TimeSpan.FromSeconds(15)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
